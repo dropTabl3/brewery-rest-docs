@@ -17,20 +17,19 @@ import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.StringUtils;
 
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
-//import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.snippet.Attributes.key;
-//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.snippet.Attributes.key;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(RestDocumentationExtension.class)
 @AutoConfigureRestDocs(uriScheme = "https", uriHost = "dev.springframework.guru", uriPort = 80)
@@ -95,15 +94,15 @@ public class BeerControllerTest {
 
         ConstrainedFields fields = new ConstrainedFields(BeerDto.class);
 
-        mockMvc.perform(post("api/v1/beer/")
+        mockMvc.perform(post("/api/v1/beer/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(beerDtoJson))
                 .andExpect(status().isCreated())
                 .andDo(document("v1/beer-new",
                         requestFields(
-                                fields.withPath("id").ignored(),
-                                fields.withPath("createdDate").ignored(),
-                                fields.withPath("lastUpdatedDate").ignored(),
+                                fields.withPath("id").description("id").ignored(),
+                                fields.withPath("createdDate").description("date").ignored(),
+                                fields.withPath("lastUpdatedDate").description("date").ignored(),
                                 fields.withPath("beerName").description("Name of the beer"),
                                 fields.withPath("beerStyle").description("Style of Beer"),
                                 fields.withPath("upc").description("Beer UPC").attributes()
